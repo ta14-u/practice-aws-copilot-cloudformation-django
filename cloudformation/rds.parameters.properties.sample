@@ -1,0 +1,14 @@
+# Use Copilot's settings for the following items
+VpcId=vpc-xxxxxxxxxxxxxxxxxxx
+CopilotServiceSecurityGroupId=sg-xxxxxxxxxxxxxxx
+PrivateSubnetId1=subnet-xxxxxxxxxxxxxxxxxxxxxxxxx
+PrivateSubnetId2=subnet-xxxxxxxxxxxxxxxxxxxxxxxxxx
+PublicSubnetId1=subnet-xxxxxxxxxxxxxxxxxxxxxxxxxx
+PublicSubnetId2=subnet-xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Set the following items to any values of your choice
+DBMasterUsername=admin-xxxxxxxxxxxxx
+DBMasterUserPassword=xxxxxxxxxxxxxxxxxxxxxxx
+DBName=xxxxxxxxxxxxxxxxx
+DBSubnetGroupName=subnet-group-xxxxxxxxxxxxxxxxxxxx
+DBBackupRetentionPeriod=7

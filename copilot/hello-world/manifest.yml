@@ -1,0 +1,60 @@
+name: hello-world
+type: Load Balanced Web Service
+
+http:
+  path: '/'
+  # Please change this line to your domain name
+  alias: example-django-app.example.com
+  targetContainer: nginx
+  healthcheck:
+    path: '/'
+    port: 80
+    healthy_threshold: 3
+    unhealthy_threshold: 2
+    interval: 10s
+    timeout: 5s
+    grace_period: 300s
+  deregistration_delay: 10s
+
+image:
+  build:
+    dockerfile: Dockerfile
+  port: 8000
+  depends_on:
+    nginx: start
+
+entrypoint: ./docker-entrypoint.app.sh
+
+cpu: 256
+memory: 512
+# Please change this line to specify the build platform
+platform: linux/amd64 # for M1 Mac: 'linux/arm64'
+count: 1
+exec: true
+network:
+  connect: true
+
+
+# share storage settings
+#   ref: https://aws.github.io/copilot-cli/ja/docs/developing/storage/
+storage:
+  ephemeral: 20
+  volumes:
+    shared_volume:
+      path: /var/data
+      efs:
+        uid: 1000
+        gid: 1000
+      read_only: false
+
+sidecars:
+  nginx:
+    port: 80
+    # Please change this line to your ECR repository
+    image: xxxxxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/example-django-app/nginx:latest
+    cpu: 256
+    memory: 512
+    count: 1
+    mount_points:
+      - source_volume: shared_volume
+        path: /var/data

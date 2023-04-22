@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID for the RDS instance.
+  CopilotServiceSecurityGroupId:
+    Type: String
+    Description: The security group ID of the Copilot service.
+  DBMasterUsername:
+    Type: String
+    Description: The master username for the RDS instance.
+  DBMasterUserPassword:
+    Type: String
+    Description: The master user password for the RDS instance.
+  DBName:
+    Type: String
+    Description: The database name for the RDS instance.
+  DBSubnetGroupName:
+    Type: String
+    Description: The name of the DB subnet group for the RDS instance.
+  PrivateSubnetId1:
+    Type: AWS::EC2::Subnet::Id
+    Description: The ID of the first subnet for the RDS instance.
+  PrivateSubnetId2:
+    Type: AWS::EC2::Subnet::Id
+    Description: The ID of the first subnet for the RDS instance.
+  PublicSubnetId1:
+    Type: AWS::EC2::Subnet::Id
+    Description: The ID of the second subnet for the RDS instance.
+  PublicSubnetId2:
+    Type: AWS::EC2::Subnet::Id
+    Description: The ID of the second subnet for the RDS instance.
+  DBBackupRetentionPeriod:
+    Type: Number
+    Description: The number of days for which automated backups are retained.
+    Default: 7
+
+
+Resources:
+  MySQLRDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      EngineVersion: 8.0
+      MasterUsername: !Ref DBMasterUsername
+      MasterUserPassword: !Ref DBMasterUserPassword
+      DBName: !Ref DBName
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup
+      PubliclyAccessible: false
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      BackupRetentionPeriod: !Ref DBBackupRetentionPeriod
+
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS MySQL Security Group
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref CopilotServiceSecurityGroupId
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for RDS
+      DBSubnetGroupName: !Sub DBSubnetGroupName
+      SubnetIds:
+        - !Ref PrivateSubnetId1
+        - !Ref PrivateSubnetId2
+        - !Ref PublicSubnetId1
+        - !Ref PublicSubnetId2
+
+Outputs:
+  RDSInstanceEndpoint:
+    Description: The endpoint of the RDS instance.
+    Value: !GetAtt MySQLRDSInstance.Endpoint.Address
