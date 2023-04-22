@@ -35,13 +35,15 @@ make install
 
 ```bash
 # ローカル開発用の環境変数
+# 一通り自身の環境に合わせて値をセットしてください
 cp .env.sample .env && vim .env
 
 # アプリ用の環境変数
+# この時点では RDS_* はコメントアウトしておき後述する手順で値をセットしてください
 cp .env.app.sample .env.app && vim .env.app
 
 # RDS の CloudFormation スタック用の環境変数
-# このファイルにはまだ値をセットする必要はありません
+# このファイルには後述する手順で値をセットするのでファイルのコピーのみ行います
 cp cloudformation/rds.parameters.properties.sample cloudformation/rds.parameters.properties
 ```
 
@@ -107,10 +109,22 @@ CloudFormation スタックを作成する
 ./scripts/rds.cloudformation.sh plan-cf
 ```
 
-デプロイする
+### 5. Django アプリに RDS の接続情報をセットして Copilot service にデプロイする
+
+RDS の接続情報をセットする
 ```bash
-./scripts/rds.cloudformation.sh deploy-cf
+# RDS_* のコメントアウトを外して値をセットする
+vim .env.app
 ```
+
+Copilot service を再デプロイする
+```bash
+./scripts/copilot.sh deploy-svc
+```
+
+
+
+
 
 ## 更新方法
 
