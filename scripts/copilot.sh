@@ -13,8 +13,8 @@ if [ -z "${COPILOT_APP_NAME}" ]; then
   echo "env COPILOT_APP_NAME is not set" 1>&2
   exit 1
 fi
-if [ -z "${COPILOT_APP_BASE_DOMAIN}" ]; then
-  echo "env COPILOT_APP_BASE_DOMAIN is not set" 1>&2
+if [ -z "${COPILOT_APP_ROOT_DOMAIN}" ]; then
+  echo "env COPILOT_APP_ROOT_DOMAIN is not set" 1>&2
   exit 1
 fi
 if [ -z "${COPILOT_ENV_NAME}" ]; then
@@ -30,8 +30,8 @@ fi
 # Create a new Copilot application
 if [ "$1" = "create-app" ]; then
   echo "Initializing Copilot Application..."
-  echo "exec: copilot app init ${COPILOT_APP_NAME} --domain ${COPILOT_APP_BASE_DOMAIN}"
-  copilot app init "${COPILOT_APP_NAME}" --domain "${COPILOT_APP_BASE_DOMAIN}"
+  echo "exec: copilot app init ${COPILOT_APP_NAME} --domain ${COPILOT_APP_ROOT_DOMAIN}"
+  copilot app init "${COPILOT_APP_NAME}" --domain "${COPILOT_APP_ROOT_DOMAIN}"
   echo -e "\033[32mSUCCESS\033[0m: Copilot Application ${COPILOT_APP_NAME} initialized\n"
 
   echo "Initializing Copilot Environment..."
