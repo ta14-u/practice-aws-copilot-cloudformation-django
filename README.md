@@ -140,6 +140,11 @@ CloudFormation スタックを作成する
 ./scripts/rds.cloudformation.sh plan-cf
 ```
 
+デプロイする
+```bash
+./scripts/rds.cloudformation.sh deploy-cf
+```
+
 ### 5. Django アプリに RDS の接続情報をセットして Copilot service に再デプロイする
 
 RDS の接続情報をセットする
