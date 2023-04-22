@@ -21,16 +21,16 @@ Parameters:
     Description: The name of the DB subnet group for the RDS instance.
   PrivateSubnetId1:
     Type: AWS::EC2::Subnet::Id
-    Description: The ID of the first subnet for the RDS instance.
+    Description: The ID of the first private subnet for the RDS instance.
   PrivateSubnetId2:
     Type: AWS::EC2::Subnet::Id
-    Description: The ID of the first subnet for the RDS instance.
+    Description: The ID of the second private subnet for the RDS instance.
   PublicSubnetId1:
     Type: AWS::EC2::Subnet::Id
-    Description: The ID of the second subnet for the RDS instance.
+    Description: The ID of the first public subnet for the RDS instance.
   PublicSubnetId2:
     Type: AWS::EC2::Subnet::Id
-    Description: The ID of the second subnet for the RDS instance.
+    Description: The ID of the second public subnet for the RDS instance.
   DBBackupRetentionPeriod:
     Type: Number
     Description: The number of days for which automated backups are retained.
