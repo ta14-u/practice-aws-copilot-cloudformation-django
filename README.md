@@ -18,11 +18,22 @@ pyenv install $(cat .python-version)
 ```
 
 ### poetry をセットアップする
-参照: https://python-poetry.org/docs/
+
+公式インストーラー：Linux, macOS, Windows (WSL) の場合
 
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
 ```
+
+公式インストーラー：Windows (Powershell) の場合
+
+```powerShell
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+```
+
+その他のインストール方法：https://python-poetry.org/docs/#installation
+
+
 
 ### 依存関係をインストールする
 
@@ -39,7 +50,7 @@ make install
 cp .env.sample .env && vim .env
 
 # アプリ用の環境変数
-# この時点では RDS_* はコメントアウトしておき後述する手順で値をセットしてください
+# RDS_* は RDS との接続時に使用するので後述する手順で値をセットします
 cp .env.app.sample .env.app && vim .env.app
 
 # RDS の CloudFormation スタック用の環境変数
@@ -65,6 +76,23 @@ make start
 
 ### 1. Copilot にデプロイする
 
+[AWS 公式の手順](https://docs.aws.amazon.com/ja_jp/AmazonECR/latest/userguide/docker-push-ecr-image.html)を参考に Nginx の Docker イメージを ECR に push する  
+
+※ Nginx の Docker イメージビルドコマンドは以下
+```bash
+docker build -t example-django-app/nginx -f docker/nginx/nginx_Dockerfile docker/nginx
+````
+
+Copilot service manifest を自身の環境に合わせて編集する
+```bash
+vim copilot/django/manifest.yml
+# http.alias には自身のドメインをセットしてください(Route53 で管理しているドメインを想定)
+#  ex) example.com, sub.example.com
+# platform は自身の Docker ビルド環境に合わせてセットしてください
+# sidecars.nginx.image に事前に ECR に push した Nginx のイメージをセットしてください
+```
+
+Copilot にデプロイする
 ```bash
 ./scripts/copilot.sh create-app
 ```
