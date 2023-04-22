@@ -69,6 +69,9 @@ make start
 ./scripts/copilot.sh create-app
 ```
 
+- この時点でデプロイされるのは Copilot の Django アプリのみです
+- 完了後に表示される URL にアクセスすると Django アプリのトップページが表示されます
+
 ### 2. Copilot でデプロイされた VPC, Subnet, SecurityGroup の ID を確認する
 
 ```bash
@@ -109,7 +112,7 @@ CloudFormation スタックを作成する
 ./scripts/rds.cloudformation.sh plan-cf
 ```
 
-### 5. Django アプリに RDS の接続情報をセットして Copilot service にデプロイする
+### 5. Django アプリに RDS の接続情報をセットして Copilot service に再デプロイする
 
 RDS の接続情報をセットする
 ```bash
